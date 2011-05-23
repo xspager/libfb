@@ -29,7 +29,7 @@ void draw_char(char ch)
             for(c = 0; c < 8; c++){
                 //printf("%c", font[ch][l][c]);
                 if(font[ch][l][c] != ' '){
-                    lfb.setpixel(c+(char_pos*8)+((l+8*32)*lfb.width), BLUE);
+                    lfb.setpixel(c+(char_pos*8)+((l+8*100)*lfb.width), BLUE);
                 }
                  
             }

@@ -6,20 +6,23 @@
 #define RED	0xFF0000
 #define	CYAN	0x00FFFF
 
-void desenha_galhos(Point, Color, Color, Color);
+void desenha_galhos(Point, Color, Color);
 
 int main(){
-	Point a = {400,600};
-	Point b = {400,550};
+	Point root;
+	int i;
 	
 	srand(time(NULL));
 	
 	lfb_init();
 
-	while(1){
+	root.x = lfb.width / 2;
+	root.y = lfb.height;
+
+	for(i=0; i < 10; i++){
 		lfb.fillscr(BLACK);
 
-		desenha_galhos(b, RED, GREEN, CYAN);
+		desenha_galhos(root, RED, GREEN);
 #ifdef WAIT
 		sleep(10);
 #endif
@@ -27,39 +30,25 @@ int main(){
 	return 0;
 }
 
-void desenha_galhos(Point p, Color ca, Color cb, Color cc)
+void desenha_galhos(Point p, Color ca, Color cb)
 {
-	Point a,b,c;
+	Point a, b;
 	
-	a.y = p.y - 65 + p.y / 4800;
-//	b.y = p.y - 70 + p.y / 4800;
-	c.y = p.y - 75 + p.y / 4800;
-	a.y = b.y = c.y = p.y - 70;
-	a.x = p.x - rand() % 200 - 1;  
-//	b.x = p.x + rand() % 150 - 1;
-	c.x = p.x + rand() % 200 + 1;
+	a.y = p.y - 40;
+	b.y = p.y - 40;
 	
-	//printf("b.x = %i\n", b.x);
-
+	a.x = p.x - lfb.width/10 >= 0 ? p.x - lfb.width / 10 : 0;
+	b.x = p.x + lfb.width/10 < lfb.width ? p.x + lfb.width / 10 : lfb.width;
+	
 #ifdef DELAY
 	usleep(5000);
 #endif
-	if(c.y > 0 && a.x > 0 && b.x < 800 && c.x < 800){
-#if 1
+
+	if(p.y > 0 && p.x > 0 && p.x < lfb.width){
 		lfb.drawline(p, a, 1, ca);
-		desenha_galhos(a, ca, cb, cc);
-//		lfb.drawline(p, b, 1, cb);
-//		desenha_galhos(b, ca, cb, cc);
-		lfb.drawline(p, c, 1, cc);
-		desenha_galhos(c, ca, cb, cc);
-#endif
-#if 0
-		lfb.drawline(p, a, 3, ca);
-//		lfb.drawline(p, b, 3, cb);
-		lfb.drawline(p, c, 3, cc);
-		desenha_galhos(a, ca, cb, cc);
-//		desenha_galhos(b, ca, cb, cc);
-		desenha_galhos(c, ca, cb, cc);
-#endif
+		lfb.drawline(p, b, 1, cb);
+		desenha_galhos(a, ca, cb);
+		desenha_galhos(b, ca, cb);
 	}
+	else return;
 }

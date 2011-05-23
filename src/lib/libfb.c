@@ -1,4 +1,5 @@
 #include "libfb.h"
+#define DELTA(x,y) ((x)>(y)?(x-y):(y-x))
 
 int fb;
 byte *scr;
@@ -22,7 +23,7 @@ void lfb_init()
 {	
 	fb = open("/dev/fb0", O_RDWR);
 	if(fb < 0){
-		printf("Can`t open /dev/fb0\n");
+		//printf("Can`t open /dev/fb0\n");
 		fb = open("/dev/graphics/fb0", O_RDWR);
 		if(fb < 0)
 			lfb_exit_error("Can`t open /dev/graphics/fb0\n");
@@ -79,11 +80,11 @@ void lfb_fill_box(int x, int y, int w, int h, Color color)
 
 void lfb_draw_line(Point a, Point b, int w, Color color)
 {
-	int x,y,xl,yl,i,xt,yt;
+	int x, y;
+	int xl,yl;
 	float d,B;
 	int dx, dy;
-
-//	printf("%d,%d -> %d,%d\n", a.x, a.y, b.x, b.y);
+	int wi, i;
 
 	if(a.y == b.y)		// horizontal
 		if(b.x < a.x)
@@ -96,56 +97,38 @@ void lfb_draw_line(Point a, Point b, int w, Color color)
 		else
 			lfb_fill_box(a.x-(w>>1), a.y, w, b.y - a.y, color);
 	else{
-		dx = (b.x > a.x) ? b.x - a.x : (a.x - b.x);
-		dy = (b.y > a.y) ? b.y - a.y : (a.y - b.y);
+		dx = DELTA(a.x, b.x);
+		dy = DELTA(a.y, b.y);
 		
 		if(dx && dy){
-			if(dx > dy){	// we will run trough x
-	//			printf("dx > dy\n");
+			if(a.y > b.y){	// we will run trough x
 				d = (float) dy / (float) dx;
-				if(b.x > a.x){
-	//				printf("b.x > a.x\n");
-					x = a.x;
-					xl = b.x;
-					y = a.y;
-					i = ((b.y - y) < 0) ? -1 : 1;
+				if(a.x < b.x){
+					x = a.x; xl = b.x; i = -1;
+				} else {
+					x = b.x; xl = a.x; i = 1;
 				}
-				else{
-	//				printf("b.x < a.x\n");
-					x = b.x;
-					xl = a.x;
-					y = b.y;
-					i = ((a.y - y) < 0) ? -1 : 1;
-				}
-				B = rint(y - d * x);
+				y = a.y < b.y ? b.y : a.y;
+				B = rint(x - d * y);
 				while(x < xl){
 					x++;
-					y = rint(d * x) + B * i;
-					lfb.setpixel(lfb.width * y + x, color);
+					y = rint(d * x) + B;
+					for(wi=0; wi < w; wi++)
+						lfb.setpixel(lfb.width * y + x + wi, RED);
 				}
-			}
-			else{		// we will run though y
-	//			printf("dx < dy\n");
+			} else {	// we will run though y
 				d = (float) dx / (float) dy;
-				if(b.y > a.y){
-	//				printf("b.y > a.y\n");
-					y = a.y;
-					yl = b.y;
-					x = a.x;
-					i = ((b.x - x) < 0) ? -1 : 1;
+				if(a.y > b.y){
+					y = a.y; yl = b.y; i = 1; x = b.x;
+				} else{
+					y = b.y; yl = a.y; i = 1; x = b.x;
 				}
-				else{
-	//				printf("b.y < a.y\n");
-					y = b.y;
-					yl = a.y;
-					x = b.x;
-					i = ((a.x - x) < 0) ? -1 : 1;
-				}
-				B = rint(x - d * y);
+				B = rint(x - d * y) * i;
 				while(y < yl){
 					y++;
-					x = rint(d * y) + B * i;
-					lfb.setpixel(lfb.width * y + x, color);
+					x = rint(d * y) + B;
+					for(wi=0; wi < w; wi++)
+						lfb.setpixel(lfb.width * y + x + wi, BLUE);
 				}
 			}
 		}

@@ -11,8 +11,9 @@ void main()
 	int x,y,s;
 	
 	lfb_init();
+
+#if 0
 	lfb.fillscr(GREEN);	
-#if 1
 	lfb.fillbox(200,200,500,300,BLUE);
 	for(y = 0; y < lfb.height; y+=60)
 		lfb.drawline((Point){0,y},(Point){lfb.width,y},1,RED);
@@ -20,8 +21,8 @@ void main()
 		lfb.drawline((Point){0,y},(Point){lfb.width,y},1,RED);
 	for(x = 0; x < lfb.width; x+=100)
 		lfb.drawline((Point){x,0},(Point){x,lfb.height},1,BLUE);	
-	
-	for(s = 10; s < 200; s+=10){
+#endif	
+	for(s = 10; s <= 100; s+=10){
 		usleep(20000);
 		lfb.fillscr(GREEN);	
 	//	lfb.fillbox(100,100,lfb.height,lfb.width/2,YELLOW);
@@ -31,20 +32,24 @@ void main()
 			lfb.drawline((Point){x,0},(Point){x,lfb.height},1,BLUE);
 	}
 
-	lfb.drawline((Point){400,50},(Point){50,300},1,YELLOW);
-	lfb.drawline((Point){400,50},(Point){750,300},1,YELLOW);
-	lfb.drawline((Point){750,300},(Point){400,550},1,YELLOW);
-	lfb.drawline((Point){400,550},(Point){50,300},1,YELLOW);
-#endif
+//	lfb.drawline((Point){400,50},(Point){50,300},1,YELLOW);
+//	lfb.drawline((Point){400,50},(Point){750,300},1,YELLOW);
+//	lfb.drawline((Point){750,300},(Point){400,550},1,YELLOW);
+//	lfb.drawline((Point){400,550},(Point){50,300},1,YELLOW);
+
 	Point pol[] = {
-		(Point){10,10},
-		(Point){100,100},
-		(Point){300,400},
-		(Point){200,200},
-		(Point){800,600},
-		(Point){50,400},
+		(Point){300,100},
+		(Point){500,100},
+		(Point){700,300},
+		(Point){700,500},
+		(Point){500,700},
+		(Point){300,700},
+		(Point){100,500},
+		(Point){100,300},
+		(Point){300,100},
 		(Point){-1,-1}
 	};
-	lfb.drawpolygon(pol, 1, GRAY);
-	lfb.drawline((Point){0,0},(Point){lfb.width,lfb.height}, 1, RED);
+	lfb.drawpolygon(pol, 4, YELLOW);
+//	lfb.drawline((Point){0,0},(Point){lfb.width,lfb.height}, 1, RED);
+//	lfb.drawline((Point){lfb.width,0}, (Point){0,lfb.height}, 1, BLUE);
 }
