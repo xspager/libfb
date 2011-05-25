@@ -71,6 +71,7 @@ struct{
 	Image* (*loadPNG)(int);
 	int (*drawimage)(Image *, Point);
 	void (*setpixel)(int offset, Color);
+    void (*putpixel)(int, int, Color);
 	void (*refresh)();
 } lfb;
 

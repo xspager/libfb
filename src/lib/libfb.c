@@ -8,6 +8,8 @@ void lfb_memset8(void *, unsigned int, size_t);
 void lfb_memset32(void *, unsigned int, size_t);
 void lfb_set_pixel8(int, Color);
 void lfb_set_pixel32(int, Color);
+void lfb_put_pixel8(int, int, Color);
+void lfb_put_pixel32(int, int, Color);
 	
 void lfb_fill_scr(Color);
 void lfb_draw_line(Point, Point, int, Color);
@@ -47,12 +49,14 @@ void lfb_init()
 		case 8:
 			lfb.memset = &lfb_memset8;
 			lfb.setpixel = &lfb_set_pixel8;
+            lfb.putpixel = &lfb_put_pixel8;
 			break;
 		case 16:
 		case 24:
 		case 32:
 			lfb.memset = &lfb_memset32;
 			lfb.setpixel = &lfb_set_pixel32;
+            lfb.putpixel = &lfb_put_pixel32;
 			break;
 	}
 	
@@ -192,10 +196,18 @@ void lfb_set_pixel8(int offset, Color c){
 	*(scr + offset) = (char) c;
 }
 
+void lfb_put_pixel8(int x, int y, Color c){
+    lfb_set_pixel8(x + lfb.width * y, c);
+}
+
 void lfb_set_pixel32(int offset, Color c){
 	if(offset < 0) return;
 	if(offset > lfb.width * lfb.height) return;
 	*(((unsigned int *) scr) + offset) = c;
+}
+
+void lfb_put_pixel32(int x, int y, Color c){
+    lfb_set_pixel32(x + lfb.width * y, c);
 }
 
 void lfb_refresh()
