@@ -118,16 +118,17 @@ void lfb_draw_line(Point a, Point b, int w, Color color)
 					x++;
 					y = rint(d * x) + B;
 					for(wi=0; wi < w; wi++)
-						lfb.setpixel(lfb.width * y + x + wi, RED);
+						lfb.setpixel(lfb.width * y + x + wi, WHITE);
 				}
 			} else {	// we will run though y
 				d = (float) dx / (float) dy;
 				if(a.y > b.y){
-					y = a.y; yl = b.y; i = 1; x = b.x;
+					y = a.y; yl = b.y; i = -1;
 				} else{
-					y = b.y; yl = a.y; i = 1; x = b.x;
+					y = b.y; yl = a.y; i = 1;
 				}
-				B = rint(x - d * y) * i;
+				x = a.x < b.x ? b.x : a.x;
+				B = rint(y - d * x);
 				while(y < yl){
 					y++;
 					x = rint(d * y) + B;

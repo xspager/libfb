@@ -20,6 +20,7 @@
 #define GREEN	0x00FF00
 #define BLUE	0x0000FF
 #define RED	0xFF0000
+#define WHITE	0xFFFFFF
 
 #if 0
 /* colors 8bpp */

@@ -13,5 +13,6 @@ ECHO	= echo
 SHELL	= /bin/sh
 
 LIBFB	= ../lib/libfb.o
+CFLAGS	= -ggdb
 
 .SILENT :
