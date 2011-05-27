@@ -1,9 +1,5 @@
 #include "../lib/libfb.h" 
 
-#define	GREEN		10
-#define YELLOW		14
-#define LIGHT_WHITE	15
-
 void main()
 {
 	int i, x, p;
