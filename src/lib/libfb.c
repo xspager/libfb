@@ -17,6 +17,7 @@ void lfb_exit_error(char *);
 void lfb_fill_box(int x, int y, int w, int h, Color);
 void lfb_draw_polygon(Point *, int, Color);
 void lfb_refresh();
+void lfb_draw_char(char, Color);
 
 struct fb_var_screeninfo fb_var_info;
 struct fb_fix_screeninfo fb_fix_info;
@@ -44,6 +45,7 @@ void lfb_init()
 	lfb.fillscr = &lfb_fill_scr;
 	lfb.drawline = &lfb_draw_line;
 	lfb.refresh = &lfb_refresh;
+	lfb.draw_char = &lfb_draw_char;
 	
 	switch(lfb.bpp){
 		case 8:
@@ -219,6 +221,33 @@ void lfb_refresh()
 	ioctl(fb, FBIOGET_VSCREENINFO, &fb_var_info);	
 }
 
+void lfb_draw_char(char ch, int color)
+{
+	static int char_pos, line;
+
+    char_pos++;
+
+    int c, l;
+    //char **font_char = font[ch];
+	if(char_pos * 8 >= lfb.width){
+		line++;
+		char_pos=0;
+	}
+
+    if(font[ch] != NULL){
+        //printf("%c", ch);
+        for(l = 0; l < 8; l++){
+            for(c = 0; c < 8; c++){
+                //printf("%c", font[ch][l][c]);
+                if(font[ch][l][c] != ' '){
+                    lfb.putpixel(c+(char_pos*8),l + (8 * line), color);
+                }
+                 
+            }
+            //printf("\n");
+        }
+    }
+}
 void openKB()
 {
 }	

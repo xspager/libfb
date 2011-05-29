@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <wchar.h>
+#include "../../include/font.h"
 
 #define YELLOW	0xFFFF00
 #define GRAY	0x888888
@@ -73,6 +74,7 @@ struct{
 	int (*drawimage)(Image *, Point);
 	void (*setpixel)(int offset, Color);
     void (*putpixel)(int, int, Color);
+	void (*draw_char)(char, Color);
 	void (*refresh)();
 } lfb;
 
