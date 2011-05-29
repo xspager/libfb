@@ -229,6 +229,11 @@ void lfb_draw_char(char ch, int color)
 
     int c, l;
     //char **font_char = font[ch];
+
+	switch(ch){
+		case '\n':
+			line++; char_pos = 0;
+	}
 	if(char_pos * 8 >= lfb.width){
 		line++;
 		char_pos=0;
@@ -242,7 +247,6 @@ void lfb_draw_char(char ch, int color)
                 if(font[ch][l][c] != ' '){
                     lfb.putpixel(c+(char_pos*8),l + (8 * line), color);
                 }
-                 
             }
             //printf("\n");
         }
