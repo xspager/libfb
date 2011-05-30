@@ -1,4 +1,5 @@
 #include "../lib/libfb.h"
+#include <ctype.h>
 #define BUF_LEN	32
 
 void draw_char(char, int);
@@ -11,13 +12,13 @@ int main(int argc, char *argv[])
     char *text;
 
 	lfb_init();
-	lfb.fillscr(WHITE);
+	lfb.fillscr(BLACK);
 
     if(argc == 2){
         text = argv[1];
 
 	    for(i = 0; i < strlen(text); i++){
-    	    lfb.draw_char(text[i], 0x579ce3);
+    	    lfb.draw_char(toupper(text[i]), 0x579ce3);
 	    }
 	}
 	else{
@@ -26,10 +27,9 @@ int main(int argc, char *argv[])
 		do{
 			bytes_read = read(STDIN_FILENO, buf, sizeof(char) * BUF_LEN);
 			for(i = 0; i < (int) bytes_read; i++){
-    	    	lfb.draw_char(buf[i], 0x579ce3);
+    	    	lfb.draw_char(toupper(buf[i]), 0x579ce3);
 	    	}
 		}while(bytes_read > 0);
 	}
 }
-
 

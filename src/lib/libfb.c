@@ -233,6 +233,10 @@ void lfb_draw_char(char ch, int color)
 	switch(ch){
 		case '\n':
 			line++; char_pos = 0;
+			return;
+		case '\t':
+			char_pos += 4;
+			return;
 	}
 	if(char_pos * 8 >= lfb.width){
 		line++;

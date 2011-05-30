@@ -1,10 +1,5 @@
 #include "../lib/libfb.h"
 
-#define BLACK	0x0
-#define	WHITE	0xFFFFFF
-#define GREEN	0x00FF00
-#define YELLOW	0xFFFF00
-
 Point ball;
 
 void update_ball(Point, int, int, Color);

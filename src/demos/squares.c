@@ -21,7 +21,7 @@ void main()
 		lfb.fillbox(x1,y1,x2,y2,x*p*x*p*x+128);
 		lfb.refresh();
 		//printf("x = %i, x1 = %i, y1 = %i, x2 = %i, y2 = %i\n", x,x1,y1,x2,y2);
-		usleep(20000);
+		usleep(2000);
 	}
 }
 
