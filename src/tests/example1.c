@@ -2,6 +2,9 @@
 /*                                                                 */
 /* This small program shows how to print a rotated string with the */
 /* FreeType 2 library.                                             */
+/* Modified from the the sample from:
+   http://freetype.sourceforge.net/freetype2/docs/tutorial/step1.html
+   http://freetype.sourceforge.net/freetype2/docs/tutorial/example1.c */
 
 
 #include <stdio.h>
@@ -10,7 +13,7 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include "lib/libfb.h"
+#include "../lib/libfb.h"
 
 
 #define WIDTH   1280
