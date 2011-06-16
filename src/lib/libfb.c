@@ -1,5 +1,6 @@
 #include "libfb.h"
-#define DELTA(x,y) ((x)>(y)?(x-y):(y-x))
+//#define DELTA(x,y) ((x)>(y)?(x-y):(y-x))
+#define DELTA(x,y) ((x) - (y))
 
 int fb;
 byte *scr;
@@ -84,58 +85,59 @@ void lfb_fill_box(int x, int y, int w, int h, Color color)
 		lfb.memset(((unsigned int *)scr) + (lfb.width * cy + x), color, w);
 }
 
-void lfb_draw_line(Point a, Point b, int w, Color color)
+void lfb_draw_line(Point pa, Point pb, int width, Color color)
 {
 	int x, y;
 	int xl,yl;
-	float d,B;
-	int dx, dy;
+	float d;
+	int deltaX, deltaY;
 	int wi, i;
 
-	if(a.y == b.y)		// horizontal
-		if(b.x < a.x)
-			lfb_fill_box(b.x, b.y-(w>>1), a.x - b.x, w, color);
+	if(pa.y == pb.y)		// horizontal
+		if(pb.x < pa.x)
+			lfb_fill_box(pb.x, pb.y-(width>>1), pa.x - pb.x, width, color);
 		else
-			lfb_fill_box(a.x, a.y-(w>>1), b.x - a.x, w, color);
-	else if(a.x == b.x)	// vertical		
-		if(b.y < a.y)
-			lfb_fill_box(b.x-(w>>1), b.y, w, a.y - b.y, color);
+			lfb_fill_box(pa.x, pa.y-(width>>1), pb.x - pa.x, width, color);
+	else if(pa.x == pb.x)	// vertical		
+		if(pb.y < pa.y)
+			lfb_fill_box(pb.x-(width>>1), pb.y, width, pa.y - pb.y, color);
 		else
-			lfb_fill_box(a.x-(w>>1), a.y, w, b.y - a.y, color);
+			lfb_fill_box(pa.x-(width>>1), pa.y, width, pb.y - pa.y, color);
 	else{
-		dx = DELTA(a.x, b.x);
-		dy = DELTA(a.y, b.y);
+		deltaX = DELTA(pa.x, pb.x);
+		deltaY = DELTA(pa.y, pb.y);
 		
-		if(dx && dy){
-			if(a.y > b.y){	// we will run trough x
-				d = (float) dy / (float) dx;
-				if(a.x < b.x){
-					x = a.x; xl = b.x; i = -1;
+		if(deltaX && deltaX){
+			if(deltaX == deltaY){
+				//iX = 1;
+				//iY = 1;
+			} else if(deltaY > deltaX) {
+				d = (float) deltaY / (float) deltaX;
+				if(pa.x < pb.x){
+					x = pa.x; xl = pb.x;
 				} else {
-					x = b.x; xl = a.x; i = 1;
+					x = pb.x; xl = pa.x;
 				}
-				y = a.y < b.y ? b.y : a.y;
-				B = rint(x - d * y);
+				y = pa.y < pb.y ? pa.y : pb.y;
 				while(x < xl){
 					x++;
-					y = rint(d * x) + B;
-					for(wi=0; wi < w; wi++)
-						lfb.setpixel(lfb.width * y + x + wi, WHITE);
+					y += d;
+					for(wi=0; wi < width; wi++)
+						lfb.putpixel(x + wi, y, color);
 				}
 			} else {	// we will run though y
-				d = (float) dx / (float) dy;
-				if(a.y > b.y){
-					y = a.y; yl = b.y; i = -1;
-				} else{
-					y = b.y; yl = a.y; i = 1;
+				d = (float) deltaX / (float) deltaY;
+				if(pa.y < pb.y){
+					y = pa.y; yl = pb.y;
+				} else {
+					y = pb.y; yl = pa.y;
 				}
-				x = a.x < b.x ? b.x : a.x;
-				B = rint(y - d * x);
+				x = pa.x;
 				while(y < yl){
 					y++;
-					x = rint(d * y) + B;
-					for(wi=0; wi < w; wi++)
-						lfb.setpixel(lfb.width * y + x + wi, BLUE);
+					x += d;
+					for(wi=0; wi < width; wi++)
+						lfb.putpixel(x + wi, y, color);
 				}
 			}
 		}

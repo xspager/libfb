@@ -13,7 +13,8 @@ ECHO	= echo
 SHELL	= /bin/sh
 
 LIBFB	= ../lib/libfb.o
-CFLAGS	= -ggdb -mtune=native -pipe
+CFLAGS = -ggdb
+#CFLAGS	= -ggdb -mtune=native -pipe
 #CFLAGS	= -ggdb -mtune=cortex-a8
 
 .SILENT :
