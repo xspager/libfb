@@ -1,3 +1,17 @@
+/*
+ * Taken from http://zarb.org/~gc/html/libpng.html
+ *
+ */
+
+/*
+ * Copyright 2002-2010 Guillaume Cottenceau.
+ *
+ * This software may be freely redistributed under the terms
+ * of the X11 license.
+ *
+ */
+
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
