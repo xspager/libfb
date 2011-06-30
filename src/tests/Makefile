@@ -22,7 +22,7 @@ colorscreen:	colorscreen.c
 testline:	testline.c
 	$(CC) -o testline testline.c $(LIBFB) -lm
 
-example1:
+example1:	example1.c
 	$(CC) -o example1 example1.c $(LIBFB) -lm -lfreetype -lz -I/usr/include/freetype2/
 
 clean:

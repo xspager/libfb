@@ -1,11 +1,11 @@
 #include "../lib/libfb.h"
 #include <stdlib.h>
-
+/*
 #define BLACK	0x0
 #define GREEN	0x00FF00
 #define RED	0xFF0000
 #define	CYAN	0x00FFFF
-
+*/
 void desenha_galhos(Point, Color, Color);
 
 int main(){
