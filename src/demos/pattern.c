@@ -22,7 +22,7 @@ void main()
 	for(x = 0; x < lfb.width; x+=100)
 		lfb.drawline((Point){x,0},(Point){x,lfb.height},1,BLUE);	
 #endif	
-/*
+
 	for(s = 10; s <= 100; s+=10){
 		usleep(20000);
 		lfb.fillscr(GREEN);	
@@ -32,7 +32,7 @@ void main()
 		for(x = 0; x < lfb.width; x+=s)
 			lfb.drawline((Point){x,0},(Point){x,lfb.height},1,BLUE);
 	}
-*/
+
 //	lfb.drawline((Point){400,50},(Point){50,300},1,YELLOW);
 //	lfb.drawline((Point){400,50},(Point){750,300},1,YELLOW);
 //	lfb.drawline((Point){750,300},(Point){400,550},1,YELLOW);
