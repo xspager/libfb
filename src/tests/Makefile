@@ -27,4 +27,4 @@ example1:	example1.c
 
 clean:
 	echo $(RM) $(PROGS)
-	$(RM) $(PROGS)
+	$(RM) -f $(PROGS)
