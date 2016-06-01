@@ -1,6 +1,4 @@
-#include "../lib/libfb.h"
-
-//void fill_box(int,int,int,int, unsigned char);
+#include <libfb.h>
 
 void main()
 {
@@ -12,16 +10,4 @@ void main()
 		lfb.refresh();
 	}
 //	fill_scr(1);
-
 }
-
-/*
-void fill_box(int x, int y, int w, int h, unsigned char color)
-{
-	int cx, cy;
-	
-	for(cy = x; cy < y+h; cy++)
-		for(cx = x; cx < x+w; cx++)
-			memset(&((unsigned char *)scr)[x][y], color, w);
-}
-*/

@@ -21,7 +21,7 @@
 #define PNG_DEBUG 3
 #include <png.h>
 
-#include "../lib/libfb.h"
+#include <libfb.h>
 
 void abort_(const char * s, ...)
 {

@@ -14,7 +14,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <wchar.h>
-#include "../../include/font.h"
+
+#include "font.h"
 
 #define YELLOW	0xFFFF00
 #define GRAY	0x888888

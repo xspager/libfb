@@ -12,8 +12,8 @@ ECHO	= echo
 
 SHELL	= /bin/sh
 
-LIBFB	= ../lib/libfb.o
-CFLAGS	= -ggdb -mtune=native -pipe -O3
-#CFLAGS	= -ggdb -mtune=cortex-a8
+LIBFB	= ../libfb.o
+#CFLAGS	= -ggdb -mtune=native -pipe -O3 -I../../include/
+CFLAGS	= -mtune=native -pipe -O3 -I../../include/
 
 .SILENT :

@@ -5,11 +5,11 @@ ffi.cdef[[
 unsigned int usleep(unsigned int useconds);
 ]]
 
-local lfb = require("src.lib.libfb")
+local lfb = require("src.libfb")
 
 lfb.fillscr(0x00FF00)
 
-for i = 0, 1000 do 
+for i = 0, 5000 do 
 	x = math.random() * 100
 	p = math.random() * 100
 	x1 = x % 100 * (lfb.width / 100)

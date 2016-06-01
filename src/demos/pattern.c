@@ -1,4 +1,4 @@
-#include "../lib/libfb.h"
+#include <libfb.h>
 
 #define YELLOW	0xFFFF00
 #define GRAY	0x888888

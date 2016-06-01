@@ -13,7 +13,7 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include "../lib/libfb.h"
+#include <libfb.h>
 
 
 #define WIDTH   1280

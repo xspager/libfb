@@ -1,4 +1,4 @@
-#include "../lib/libfb.h"
+#include <libfb.h>
 
 #define STRIP_WIDTH	32
 

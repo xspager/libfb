@@ -1,4 +1,4 @@
-#include "../lib/libfb.h"
+#include <libfb.h>
 #include <ctype.h>
 #define BUF_LEN	32
 
