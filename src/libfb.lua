@@ -38,7 +38,7 @@ void lfb_init();
 ]]
 
 -- FIXME: this path could/should be absolute
-local libfb = ffi.load("./src/lib/libfb.so")
+local libfb = ffi.load("./src/libfb.so")
 
 libfb.lfb_init()
 
