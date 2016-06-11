@@ -33,8 +33,14 @@ void lfb_init()
 			lfb_exit_error("Can`t open /dev/graphics/fb0\n");
 	}
 	
-	ioctl(fb, FBIOGET_VSCREENINFO, &fb_var_info);
-	ioctl(fb, FBIOGET_FSCREENINFO, &fb_fix_info);
+	if(ioctl(fb, FBIOGET_VSCREENINFO, &fb_var_info) == -1) {
+		perror("Error reading variable information");
+		exit(2);
+	}
+	if(ioctl(fb, FBIOGET_FSCREENINFO, &fb_fix_info) == -1) {
+		perror("Error reading fixed information");
+		exit(3);
+	}
 	
 	// set some constants
 	lfb.width = fb_var_info.xres;
