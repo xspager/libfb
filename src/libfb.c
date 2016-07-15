@@ -3,6 +3,7 @@
 #include <wchar.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <math.h>
 #include <fcntl.h>
@@ -106,8 +107,37 @@ void lfb_fill_box(int x, int y, int w, int h, Color color)
 		lfb.memset(((unsigned int *)scr) + (lfb.width * cy + x), color, w);
 }
 
+/* Modifyed copy from https://github.com/ssloy/tinyrenderer/blob/f6fecb7ad493264ecd15e230411bfb1cca539a12/main.cpp
+	...lets be honest, I couldn't even implement it correctly :/
+*/
 void lfb_draw_line(Point pa, Point pb, int width, Color color)
 {
+	bool steep = false;
+	int x;
+	Point *start = &pa, *end = &pb, *tmp;
+	
+	if(abs(pa.x - pb.x) < abs(pa.y - pb.y)){
+		start = &(Point){.x = pa.y, .y = pa.x};
+		end = &(Point){.x = pb.y, .y = pb.x};
+		steep = true;
+	}
+	if(start->x > end->x){
+		tmp = start;
+		start = end;
+		end = tmp;
+	}
+
+	for(x = start->x; x <= end->x; x++){
+		float t = (x-start->x)/(float) (end->x - start->x);
+		int y = start->y * (1.-t) + end->y*t;
+		if (steep){
+			lfb.putpixel(y, x, color);
+		} else {
+			lfb.putpixel(x, y, color);
+		}
+	}
+
+	/*
 	int x, y;
 	int xl,yl;
 	float d;
@@ -163,6 +193,7 @@ void lfb_draw_line(Point pa, Point pb, int width, Color color)
 			}
 		}
 	}
+	*/
 }
 
 /*
