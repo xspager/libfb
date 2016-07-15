@@ -21,7 +21,7 @@ int main()
 		x2 = p % 100 * (lfb.width / 100);
 		y1 = x * (lfb.height / 100);
 		y2 = p * (lfb.height / 100);
-		lfb.fillbox(x1,y1,x2,y2,x*p*x*p*x+128);
+		lfb.fillbox(x1,y1,x2,y2, rand()*0x0F0F0F0F);
 		lfb.refresh();
 		//printf("x = %i, x1 = %i, y1 = %i, x2 = %i, y2 = %i\n", x,x1,y1,x2,y2);
 		usleep(2000);
