@@ -1,4 +1,19 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <wchar.h>
+#include <stdint.h>
+#include <string.h>
+#include <unistd.h>
+#include <math.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <sys/ioctl.h>
+#include <linux/fb.h>
+
 #include "../include/libfb.h"
+#include "../include/font.h"
 //#define DELTA(x,y) ((x)>(y)?(x-y):(y-x))
 #define DELTA(x,y) ((x) - (y))
 
@@ -82,7 +97,7 @@ void lfb_fill_scr(Color c)
 
 void lfb_fill_box(int x, int y, int w, int h, Color color)
 {
-	int cy,cx;
+	int cy;
 
 	if(x+w > lfb.width) w = lfb.width - x;
 	if(y+h > lfb.height) h = lfb.height - y;
@@ -97,7 +112,7 @@ void lfb_draw_line(Point pa, Point pb, int width, Color color)
 	int xl,yl;
 	float d;
 	int deltaX, deltaY;
-	int wi, i;
+	int wi; //, i;
 
 	if(pa.y == pb.y)		// horizontal
 		if(pb.x < pa.x)
@@ -178,7 +193,11 @@ void lfb_set_box(int x, int y, int w, int h)
 
 int lfb_comp_point(Point *pa, Point *pb)
 {
-	if(pa->x == pb->x && pa->y == pb->y) return 0;
+	if(pa->x == pb->x && pa->y == pb->y) {
+		return EXIT_SUCCESS;
+	} else {
+		return -1;
+	}
 }
 
 void lfb_add_point(Point *pa, Point *pb, Point *pr)
@@ -251,12 +270,12 @@ void lfb_draw_char(char ch, int color)
 		char_pos=0;
 	}
 
-    if(font[ch] != NULL){
+    if(font[(uint8_t) ch] != NULL){
         //printf("%c", ch);
         for(l = 0; l < 8; l++){
             for(c = 0; c < 8; c++){
                 //printf("%c", font[ch][l][c]);
-                if(font[ch][l][c] != ' '){
+                if(font[(uint8_t)ch][l][c] != ' '){
                     lfb.putpixel(c+(char_pos*8),l + (8 * line), color);
                 }
             }

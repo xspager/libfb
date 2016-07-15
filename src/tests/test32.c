@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define WIDTH	1024
 #define HEIGHT	768
@@ -28,5 +29,6 @@ int main(int argc, char *argv[])
 		putchar(0x0);
 #endif
 	}
-	
+
+	return EXIT_SUCCESS;
 }

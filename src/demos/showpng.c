@@ -11,10 +11,10 @@
  *
  */
 
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include <stdarg.h>
 
@@ -46,7 +46,7 @@ png_bytep * row_pointers;
 
 void read_png_file(char* file_name)
 {
-	char header[8];	// 8 is the maximum size that can be checked
+	uint8_t  header[8];	// 8 is the maximum size that can be checked
 
 	FILE *fp = fopen(file_name, "rb");
 
@@ -133,6 +133,6 @@ int main(int argc, char *argv[])
 
 	process_file();
 
-	return 0;
+	return EXIT_SUCCESS;
 }
 

@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <stdint.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -21,7 +22,7 @@
 
 
 /* origin is the upper left corner */
-unsigned char image[HEIGHT][WIDTH];
+uint32_t image[HEIGHT][WIDTH];
 
 
 /* Replace this function with something useful. */
@@ -52,16 +53,22 @@ draw_bitmap( FT_Bitmap*  bitmap,
 void
 show_image( void )
 {
-  int  i, j;
+	int  i, j;
+	uint32_t color;
 
-  lfb.fillscr(WHITE);
+    lfb.fillscr(BLACK);
 
-  for ( i = 0; i < HEIGHT; i++ )
-  {
-    for ( j = 0; j < WIDTH; j++ )
-	  if(image[i][j] > 0)
-      	lfb.putpixel(i,j, image[i][j] > 128 ? GRAY : BLACK);
-  }
+    for ( i = 0; i < HEIGHT; i++ ) {
+        for ( j = 0; j < WIDTH; j++ ) {
+			// ARGB
+			color = image[i][j];
+        	if(color) {
+				//printf("0x%08x\n", color);
+				color = ((color & 0x000000FF) << 8) + 0xFF000000; // map the blue to green and set alpha to 0xFF
+			}
+          	lfb.putpixel(i,j, color);
+      	}
+    }
 }
 
 
@@ -74,11 +81,11 @@ main( int     argc,
 
   FT_GlyphSlot  slot;
   FT_Matrix     matrix;                 /* transformation matrix */
-  FT_UInt       glyph_index;
+  //FT_UInt       glyph_index;
   FT_Vector     pen;                    /* untransformed origin  */
   FT_Error      error;
 
-  char*         filename;
+  //char*         filename;
   char*         text;
 
   double        angle;
@@ -93,7 +100,7 @@ main( int     argc,
     exit( 1 );
   }
 
-  filename      = argv[1];                           /* first argument     */
+  //filename      = argv[1];                           /* first argument     */
   text          = argv[2];                           /* second argument    */
   num_chars     = strlen( text );
   angle         = ( 90.0 / 360 ) * 3.14159 * 2;      /* use 25 degrees     */
@@ -129,7 +136,7 @@ main( int     argc,
     FT_Set_Transform( face, &matrix, &pen );
 
     /* load glyph image into the slot (erase previous one) */
-    error = FT_Load_Char( face, text[n], FT_LOAD_RENDER );
+    error = FT_Load_Char( face, text[n], FT_LOAD_RENDER | FT_LOAD_COLOR );
     if ( error )
       continue;                 /* ignore errors */
 
@@ -148,7 +155,7 @@ main( int     argc,
   FT_Done_Face    ( face );
   FT_Done_FreeType( library );
 
-  return 0;
+  return EXIT_SUCCESS;
 }
 
 /* EOF */

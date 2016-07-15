@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <libfb.h>
 #define INC 8
 
@@ -15,5 +16,6 @@ int main()
 	for(color = 0; color < 0xFF; color+=INC){
 		lfb.fillscr(color);
 	}
-	return 0;
+
+	return EXIT_SUCCESS;
 }

@@ -1,10 +1,12 @@
+#include <stdlib.h>
+#include <unistd.h>
 #include <libfb.h>
 
 Point ball;
 
 void update_ball(Point, int, int, Color);
 
-void main()
+int main()
 {
 	lfb_init();
 	
@@ -38,6 +40,7 @@ void main()
 		usleep(30000);
 	}
 
+	return EXIT_SUCCESS;
 }
 
 void update_ball(Point ball, int w, int h, Color color)

@@ -14,6 +14,6 @@ SHELL	= /bin/sh
 
 LIBFB	= ../libfb.o
 #CFLAGS	= -ggdb -mtune=native -pipe -O3 -I../../include/
-CFLAGS	= -mtune=native -pipe -O3 -I../../include/
+CFLAGS	= -mtune=native -Wall -pipe -O3 -g -I../../include/
 
 .SILENT :

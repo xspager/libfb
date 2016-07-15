@@ -1,6 +1,9 @@
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
 #include <libfb.h> 
 
-void main()
+int main()
 {
 	int i, x, p;
 	int x1, y1, x2, y2;
@@ -23,5 +26,6 @@ void main()
 		//printf("x = %i, x1 = %i, y1 = %i, x2 = %i, y2 = %i\n", x,x1,y1,x2,y2);
 		usleep(2000);
 	}
+	return EXIT_SUCCESS;
 }
 

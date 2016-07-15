@@ -2,20 +2,7 @@
 	libfb.h
 */
 
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <linux/fb.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <sys/ioctl.h>
-#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <wchar.h>
-
-#include "font.h"
+#include <stddef.h>
 
 #define YELLOW	0xFFFF00
 #define GRAY	0x888888
@@ -44,6 +31,7 @@
 #define YELLOW		14
 #define LIGHT_WHITE	15
 #endif
+
 typedef unsigned char byte;
 
 typedef struct{
@@ -80,4 +68,5 @@ struct{
 	void (*refresh)();
 } lfb;
 
+void lfb_init();
 extern byte *src;

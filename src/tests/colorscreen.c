@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <libfb.h>
 
 int main()
@@ -14,5 +15,5 @@ int main()
 		w = lfb.width - (x + x); h = lfb.height - (y + y);
 	}
 	
-	return 0;
+	return EXIT_SUCCESS;
 }

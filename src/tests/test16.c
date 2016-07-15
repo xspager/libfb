@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char *argv[])
 {
@@ -34,5 +35,5 @@ int main(int argc, char *argv[])
 		putchar(0x0);
 #endif
 	}
-	
+	return EXIT_SUCCESS;	
 }

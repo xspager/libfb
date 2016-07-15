@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <libfb.h>
 
 #define YELLOW	0xFFFF00
@@ -6,9 +7,9 @@
 #define BLUE	0x0000FF
 #define RED	0xFF0000
 
-void main()
+int main()
 {
-	int x,y,s;
+	//int x,y,s;
 	
 	lfb_init();
 
@@ -55,4 +56,6 @@ void main()
 	lfb.drawpolygon(pol, 2, YELLOW);
 //	lfb.drawline((Point){0,0},(Point){lfb.width,lfb.height}, 1, RED);
 //	lfb.drawline((Point){lfb.width,0}, (Point){0,lfb.height}, 1, BLUE);
+
+	return EXIT_SUCCESS;
 }

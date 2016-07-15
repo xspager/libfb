@@ -1,5 +1,6 @@
-#include <libfb.h>
 #include <stdlib.h>
+#include <time.h>
+#include <libfb.h>
 /*
 #define BLACK	0x0
 #define GREEN	0x00FF00
@@ -27,7 +28,7 @@ int main(){
 		sleep(10);
 #endif
 	}
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 void desenha_galhos(Point p, Color ca, Color cb)

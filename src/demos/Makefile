@@ -6,7 +6,7 @@ CFLAGS += -I../../include/
 all:	$(PROGS)
 
 %:	%.c ../libfb.o
-	$(CC) -o $* $*.c -lm -lpng $(LIBFB) $(CFLAGS)
+	$(CC) -o $* $*.c -lm -lpng -lz $(LIBFB) $(CFLAGS) #-static
 
 clean:
 	$(RM) $(PROGS)

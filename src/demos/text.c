@@ -1,5 +1,9 @@
-#include <libfb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include <ctype.h>
+#include <libfb.h>
 #define BUF_LEN	32
 
 void draw_char(char, int);
@@ -33,5 +37,7 @@ int main(int argc, char *argv[])
 	    	}
 		}while(bytes_read > 0);
 	}
+
+	return EXIT_SUCCESS;
 }
 
