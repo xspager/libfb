@@ -59,6 +59,7 @@ void lfb_init()
 	}
 	
 	// set some constants
+	strncpy(lfb.id, fb_fix_info.id, sizeof(lfb.id));
 	lfb.width = fb_var_info.xres;
 	lfb.height = fb_var_info.yres;
 	lfb.bpp = fb_var_info.bits_per_pixel;

@@ -49,6 +49,7 @@ typedef struct{
 } Image;
 
 struct{
+	char id[18];
 	int width;
 	int height;
 	int bpp;
