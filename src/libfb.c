@@ -108,7 +108,7 @@ void lfb_fill_box(int x, int y, int w, int h, Color color)
 		lfb.memset(((unsigned int *)scr) + (lfb.width * cy + x), color, w);
 }
 
-/* Modifyed copy from https://github.com/ssloy/tinyrenderer/blob/f6fecb7ad493264ecd15e230411bfb1cca539a12/main.cpp
+/* Modifyed copy from https://github.com/ssloy/tinyrenderer/wiki/Lesson-1:-Bresenham%E2%80%99s-Line-Drawing-Algorithm
 	...lets be honest, I couldn't even implement it correctly :/
 */
 void lfb_draw_line(Point pa, Point pb, int width, Color color)
@@ -128,6 +128,11 @@ void lfb_draw_line(Point pa, Point pb, int width, Color color)
 		end = tmp;
 	}
 
+	int dx = end->x - start->x;
+	int dy = end->y - start->y;
+	int derror2 = abs(dy)*2;
+	int error2 = 0;
+
 	for(x = start->x; x <= end->x; x++){
 		float t = (x-start->x)/(float) (end->x - start->x);
 		int y = start->y * (1.-t) + end->y*t;
@@ -135,6 +140,11 @@ void lfb_draw_line(Point pa, Point pb, int width, Color color)
 			lfb.putpixel(y, x, color);
 		} else {
 			lfb.putpixel(x, y, color);
+		}
+		error2 += derror2;
+		if(error2 > dx) {
+			y += (end->y > start->y?1:-1);
+			error2 -= dx * 2;
 		}
 	}
 
