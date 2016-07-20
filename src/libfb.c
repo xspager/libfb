@@ -75,14 +75,14 @@ void lfb_init()
 		case 8:
 			lfb.memset = &lfb_memset8;
 			lfb.setpixel = &lfb_set_pixel8;
-            lfb.putpixel = &lfb_put_pixel8;
+			lfb.putpixel = &lfb_put_pixel8;
 			break;
 		case 16:
 		case 24:
 		case 32:
 			lfb.memset = &lfb_memset32;
 			lfb.setpixel = &lfb_set_pixel32;
-            lfb.putpixel = &lfb_put_pixel32;
+			lfb.putpixel = &lfb_put_pixel32;
 			break;
 	}
 	
@@ -208,8 +208,8 @@ void lfb_draw_line(Point pa, Point pb, int width, Color color)
 }
 
 /*
- * Pa     
- *       Pb 
+ * Pa	 
+ *	   Pb 
  */
 //void draw_box(Point )
 
@@ -269,7 +269,7 @@ void lfb_set_pixel8(int offset, Color c){
 }
 
 void lfb_put_pixel8(int x, int y, Color c){
-    lfb_set_pixel8(x + lfb.width * y, c);
+	lfb_set_pixel8(x + lfb.width * y, c);
 }
 
 void lfb_set_pixel32(int offset, Color c){
@@ -279,7 +279,7 @@ void lfb_set_pixel32(int offset, Color c){
 }
 
 void lfb_put_pixel32(int x, int y, Color c){
-    lfb_set_pixel32(x + lfb.width * y, c);
+	lfb_set_pixel32(x + lfb.width * y, c);
 }
 
 void lfb_refresh()
@@ -294,10 +294,10 @@ void lfb_draw_char(char ch, int color)
 {
 	static int char_pos, line;
 
-    char_pos++;
+	char_pos++;
 
-    int c, l;
-    //char **font_char = font[ch];
+	int c, l;
+	//char **font_char = font[ch];
 
 	switch(ch){
 		case '\n':
@@ -312,18 +312,18 @@ void lfb_draw_char(char ch, int color)
 		char_pos=0;
 	}
 
-    if(font[(uint8_t) ch] != NULL){
-        //printf("%c", ch);
-        for(l = 0; l < 8; l++){
-            for(c = 0; c < 8; c++){
-                //printf("%c", font[ch][l][c]);
-                if(font[(uint8_t)ch][l][c] != ' '){
-                    lfb.putpixel(c+(char_pos*8),l + (8 * line), color);
-                }
-            }
-            //printf("\n");
-        }
-    }
+	if(font[(uint8_t) ch] != NULL){
+		//printf("%c", ch);
+		for(l = 0; l < 8; l++){
+			for(c = 0; c < 8; c++){
+				//printf("%c", font[ch][l][c]);
+				if(font[(uint8_t)ch][l][c] != ' '){
+					lfb.putpixel(c+(char_pos*8),l + (8 * line), color);
+				}
+			}
+			//printf("\n");
+		}
+	}
 }
 void openKB()
 {
