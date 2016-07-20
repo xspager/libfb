@@ -50,6 +50,7 @@ typedef struct{
 
 struct{
 	char id[18];
+	int pixels_per_line;
 	int width;
 	int height;
 	int bpp;
@@ -64,7 +65,7 @@ struct{
 	Image* (*loadPNG)(int);
 	int (*drawimage)(Image *, Point);
 	void (*setpixel)(int offset, Color);
-    void (*putpixel)(int, int, Color);
+	void (*putpixel)(int, int, Color);
 	void (*draw_char)(char, Color);
 	void (*refresh)();
 } lfb;
