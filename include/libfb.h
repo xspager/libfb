@@ -61,6 +61,7 @@ typedef struct {
 struct {
 #endif
 	char id[18]; //!< Framebuffer driver identification string
+	int pixels_per_line;
 	int width;
 	int height;
 	int bpp;

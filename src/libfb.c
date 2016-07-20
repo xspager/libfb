@@ -60,6 +60,7 @@ void lfb_init()
 	
 	// set some constants
 	strncpy(lfb.id, fb_fix_info.id, sizeof(lfb.id));
+	lfb.pixels_per_line = fb_fix_info.line_length / 4;
 	lfb.width = fb_var_info.xres;
 	lfb.height = fb_var_info.yres;
 	lfb.bpp = fb_var_info.bits_per_pixel;
@@ -105,7 +106,7 @@ void lfb_fill_box(int x, int y, int w, int h, Color color)
 	if(y+h > lfb.height) h = lfb.height - y;
 
 	for(cy = y; cy < y + h; cy++)
-		lfb.memset(((unsigned int *)scr) + (lfb.width * cy + x), color, w);
+		lfb.memset(((unsigned int *)scr) + ((lfb.pixels_per_line) * cy + x), color, w);
 }
 
 /* Modifyed copy from https://github.com/ssloy/tinyrenderer/wiki/Lesson-1:-Bresenham%E2%80%99s-Line-Drawing-Algorithm
@@ -269,7 +270,7 @@ void lfb_set_pixel8(int offset, Color c){
 }
 
 void lfb_put_pixel8(int x, int y, Color c){
-	lfb_set_pixel8(x + lfb.width * y, c);
+    lfb_set_pixel8(x + lfb.pixels_per_line * y, c);
 }
 
 void lfb_set_pixel32(int offset, Color c){
@@ -279,7 +280,7 @@ void lfb_set_pixel32(int offset, Color c){
 }
 
 void lfb_put_pixel32(int x, int y, Color c){
-	lfb_set_pixel32(x + lfb.width * y, c);
+    lfb_set_pixel32(x + lfb.pixels_per_line * y, c);
 }
 
 void lfb_refresh()
