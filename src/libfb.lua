@@ -15,24 +15,24 @@ typedef struct{
 } Image;
 
 struct{
-    char id[18];
-    int width;
-    int height;
-    int bpp;
-    void (*init)();
-    void (*memset)(void *, unsigned int, size_t);
-    void (*fillscr)(Color);
-    void (*fillbox)(int, int, int, int, Color);
-    void (*drawline)(Point, Point, int, Color);
-    void (*drawpolygon)(Point *, int, Color);
-    void (*drawsquare)(Point, int, int, int, Color);
-    void (*fillsquare)(Point, int, int, Color);
-    Image* (*loadPNG)(int);
-    int (*drawimage)(Image *, Point);
-    void (*setpixel)(int offset, Color);
-    void (*putpixel)(int, int, Color);
-    void (*draw_char)(char, Color);
-    void (*refresh)();
+	char id[18]; //!< Framebuffer driver identification string
+	int pixels_per_line;
+	int width;
+	int height;
+	int bpp;
+	void (*memset)(void *dst, unsigned int data, size_t n);
+	void (*fillscr)(Color c);
+	void (*fillbox)(int, int, int, int, Color);
+	void (*drawline)(Point a, Point b, int width, Color c);
+	void (*drawpolygon)(Point *, int, Color);
+	void (*drawsquare)(Point, int, int, int, Color);
+	void (*fillsquare)(Point, int, int, Color);
+	Image* (*loadPNG)(int);
+	int (*drawimage)(Image *, Point);
+	void (*setpixel)(int offset, Color);
+	void (*putpixel)(int, int, Color);
+	void (*draw_char)(char, Color);
+	void (*refresh)();
 } lfb;
 
 void lfb_init();
