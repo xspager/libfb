@@ -25,13 +25,13 @@ int main()
 #endif	
 #if 0 
 	for(s = 10; s <= 100; s+=10){
-		usleep(20000);
 		lfb.fillscr(GREEN);	
 	//	lfb.fillbox(100,100,lfb.height,lfb.width/2,YELLOW);
 		for(y = 0; y < lfb.height; y+=s)
 			lfb.drawline((Point){0,y},(Point){lfb.width,y},1,RED);
 		for(x = 0; x < lfb.width; x+=s)
 			lfb.drawline((Point){x,0},(Point){x,lfb.height},1,BLUE);
+		usleep(500 * 1000);
 	}
 #endif
 #if 0
@@ -50,7 +50,6 @@ int main()
 		(Point){300,700},
 		(Point){100,500},
 		(Point){100,300},
-		(Point){300,100},
 		(Point){-1,-1}
 	};
 	lfb.drawpolygon(pol, 2, YELLOW);
