@@ -9,7 +9,7 @@ local lfb = require("src.libfb")
 
 local Point = ffi.metatype("Point", {})
 
-lfb.fillscr(0xFFFFFF) -- white
+lfb.fillscr(0) -- black
 
 local t1 = ffi.new("Point[3]", {Point(10,70), Point(50,160), Point(70,80)})
 local t2 = ffi.new("Point[3]", {Point(180,50), Point(150,1), Point(70,180)})
