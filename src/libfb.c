@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <math.h>
 #include <fcntl.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
@@ -33,6 +32,7 @@ void lfb_draw_line(Point, Point, int, Color);
 void lfb_exit_error(char *);
 void lfb_fill_box(int x, int y, int w, int h, Color);
 void lfb_draw_polygon(Point *, int, Color);
+void lfb_draw_triangle(Point[3], int, Color);
 void lfb_refresh();
 void lfb_draw_char(char, Color);
 
@@ -67,6 +67,7 @@ void lfb_init()
 	
 	lfb.fillbox = &lfb_fill_box;
 	lfb.drawpolygon = &lfb_draw_polygon;
+	lfb.drawtriangle = &lfb_draw_triangle;
 	lfb.fillscr = &lfb_fill_scr;
 	lfb.drawline = &lfb_draw_line;
 	lfb.refresh = &lfb_refresh;
@@ -222,6 +223,16 @@ void lfb_draw_polygon(Point *points, int w, Color c)
 		lfb.drawline(*p, *(p+1),  w, c);
 		p++;
 	}
+	lfb.drawline(*p, *points,  w, c); // close polygon
+}
+
+void lfb_draw_triangle(Point p[3], int w, Color c)
+{
+	int i;
+	for(i = 0; i < 2; i++){
+		lfb.drawline(p[i], p[i+1],  w, c);
+	}
+	lfb.drawline(p[2], p[0],  w, c); // close triangle
 }
 
 void lfb_set_box(int x, int y, int w, int h)

@@ -70,6 +70,7 @@ struct {
 	void (*fillbox)(int, int, int, int, Color);
 	void (*drawline)(Point a, Point b, int width, Color c);
 	void (*drawpolygon)(Point *, int, Color);
+	void (*drawtriangle)(Point[3], int, Color);
 	void (*drawsquare)(Point, int, int, int, Color);
 	void (*fillsquare)(Point, int, int, Color);
 	Image* (*loadPNG)(int);
