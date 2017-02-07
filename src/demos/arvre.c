@@ -1,55 +1,38 @@
 #include <stdlib.h>
+#include <unistd.h>
 #include <time.h>
+#include <math.h>
 #include <libfb.h>
-/*
-#define BLACK	0x0
-#define GREEN	0x00FF00
-#define RED	0xFF0000
-#define	CYAN	0x00FFFF
-*/
-void desenha_galhos(Point, Color, Color);
+
+#define DEGTORAD(x) (x * M_PI / 180)
+
+void desenha_galhos(Point p1, Color c, float h, float w, int angle, int depth)
+{
+	Point p2;
+
+	if(depth == 0) return;
+
+	p2.x = p1.x + cos(DEGTORAD(angle)) * depth * 7.0;
+	p2.y = p1.y + sin(DEGTORAD(angle)) * depth * 7.0;
+
+	lfb.drawline(p1, p2, 1, c);
+	desenha_galhos(p2, c, h, w, angle - 30, depth - 1);
+	desenha_galhos(p2, c, h, w, angle + 20, depth - 1);
+}
 
 int main(){
 	Point root;
-	int i;
 	
-	srand(time(NULL));
+	//srand(time(NULL));
 	
 	lfb_init();
 
 	root.x = lfb.width / 2;
 	root.y = lfb.height;
 
-	for(i=0; i < 10; i++){
-		lfb.fillscr(BLACK);
+	lfb.fillscr(BLACK);
+	desenha_galhos(root, GREEN, lfb.height, lfb.width, -90, 10);
 
-		desenha_galhos(root, RED, GREEN);
-#ifdef WAIT
-		sleep(10);
-#endif
-	}
 	return EXIT_SUCCESS;
 }
 
-void desenha_galhos(Point p, Color ca, Color cb)
-{
-	Point a, b;
-	
-	a.y = p.y - 40;
-	b.y = p.y - 40;
-	
-	a.x = p.x - lfb.width/10 >= 0 ? p.x - lfb.width / 10 : 0;
-	b.x = p.x + lfb.width/10 < lfb.width ? p.x + lfb.width / 10 : lfb.width;
-	
-#ifdef DELAY
-	usleep(5000);
-#endif
-
-	if(p.y > 0 && p.x > 0 && p.x < lfb.width){
-		lfb.drawline(p, a, 1, ca);
-		lfb.drawline(p, b, 1, cb);
-		desenha_galhos(a, ca, cb);
-		desenha_galhos(b, ca, cb);
-	}
-	else return;
-}
