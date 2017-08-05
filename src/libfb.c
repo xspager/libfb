@@ -21,11 +21,12 @@ int fb;
 byte *scr;
 
 void lfb_memset8(void *, unsigned int, size_t);
+void lfb_memset16(void *, unsigned int, size_t);
 void lfb_memset32(void *, unsigned int, size_t);
+void lfb_put_pixel(int, int, Color);
 void lfb_set_pixel8(int, Color);
+void lfb_set_pixel16(int, Color);
 void lfb_set_pixel32(int, Color);
-void lfb_put_pixel8(int, int, Color);
-void lfb_put_pixel32(int, int, Color);
 	
 void lfb_fill_scr(Color);
 void lfb_draw_line(Point, Point, int, Color);
@@ -41,7 +42,11 @@ struct fb_fix_screeninfo fb_fix_info;
 
 void lfb_init()
 {	
-	fb = open("/dev/fb0", O_RDWR);
+	char *FB_DEV = getenv("FRAMEBUFFER");
+	if(FB_DEV == NULL){
+		FB_DEV = "/dev/fb0";
+	}
+	fb = open(FB_DEV, O_RDWR);
 	if(fb < 0){
 		//printf("Can`t open /dev/fb0\n");
 		fb = open("/dev/graphics/fb0", O_RDWR);
@@ -72,26 +77,28 @@ void lfb_init()
 	lfb.drawline = &lfb_draw_line;
 	lfb.refresh = &lfb_refresh;
 	lfb.draw_char = &lfb_draw_char;
+	lfb.putpixel = &lfb_put_pixel;
 	
 	switch(lfb.bpp){
 		case 8:
 			lfb.memset = &lfb_memset8;
 			lfb.setpixel = &lfb_set_pixel8;
-			lfb.putpixel = &lfb_put_pixel8;
 			break;
 		case 16:
+			lfb.memset = &lfb_memset16;
+			lfb.setpixel = &lfb_set_pixel16;
+			break;
 		case 24:
 		case 32:
 			lfb.memset = &lfb_memset32;
 			lfb.setpixel = &lfb_set_pixel32;
-			lfb.putpixel = &lfb_put_pixel32;
 			break;
 	}
 	
 	//printf("Screen size %dx%d\n", lfb.width, lfb.height);
 
 	scr = (unsigned char *) mmap(0, fb_fix_info.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fb, 0);
-	scr+= (fb_var_info.xoffset + fb_var_info.yoffset * fb_var_info.xres_virtual) * (fb_var_info.bits_per_pixel >> 3);
+	//scr+= (fb_var_info.xoffset + fb_var_info.yoffset * fb_var_info.xres_virtual) * (fb_var_info.bits_per_pixel >> 3);
 }
 
 void lfb_fill_scr(Color c)
@@ -270,6 +277,16 @@ void lfb_memset8(void *dst, unsigned int b, size_t len){
 	memset(dst, b, len);
 }
 
+void lfb_memset16(void *dst, unsigned int b, size_t len){
+	int i;
+	uint16_t *dst_16;
+	for(i=0; i < len*2; i++){
+		dst_16 = (uint16_t *) &dst[i];
+		*dst_16 = (uint16_t)b;
+	}
+	//memset(dst, b, len*2);
+}
+
 void lfb_memset32(void *dst, unsigned int b, size_t len){
 	wmemset(dst, b, len);
 }
@@ -280,18 +297,20 @@ void lfb_set_pixel8(int offset, Color c){
 	*(scr + offset) = (char) c;
 }
 
-void lfb_put_pixel8(int x, int y, Color c){
-    lfb_set_pixel8(x + lfb.pixels_per_line * y, c);
+void lfb_put_pixel(int x, int y, Color c){
+	lfb.setpixel(x + lfb.pixels_per_line * y, c);
+}
+
+void lfb_set_pixel16(int offset, Color c){
+	if(offset < 0) return;
+	if(offset > lfb.width * lfb.height) return;
+	*(((uint16_t *) scr) + offset) = c;
 }
 
 void lfb_set_pixel32(int offset, Color c){
 	if(offset < 0) return;
 	if(offset > lfb.width * lfb.height) return;
 	*(((unsigned int *) scr) + offset) = c;
-}
-
-void lfb_put_pixel32(int x, int y, Color c){
-    lfb_set_pixel32(x + lfb.pixels_per_line * y, c);
 }
 
 void lfb_refresh()

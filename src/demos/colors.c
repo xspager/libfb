@@ -6,7 +6,7 @@ int main()
 	lfb_init();
 	
 	int i;
-	for(i=0;i<0xFFFFFF;i+=32){
+	for(i=0;i<0xFFFF;i+=2){
 		lfb.fillscr(i);
 		lfb.refresh();
 	}
