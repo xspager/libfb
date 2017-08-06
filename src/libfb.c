@@ -298,19 +298,19 @@ void lfb_set_pixel8(int offset, Color c){
 }
 
 void lfb_put_pixel(int x, int y, Color c){
-	lfb.setpixel(x + lfb.width * y, c);
+	lfb.setpixel(x + (lfb.width * y), c);
 }
 
 void lfb_set_pixel16(int offset, Color c){
 	if(offset < 0) return;
 	if(offset > lfb.width * lfb.height) return;
-	*(((uint16_t *) scr) + offset) = c;
+	*(uint16_t *) (scr + (offset *2)) = c;
 }
 
 void lfb_set_pixel32(int offset, Color c){
 	if(offset < 0) return;
 	if(offset > lfb.width * lfb.height) return;
-	*(((unsigned int *) scr) + offset) = c;
+	*(unsigned int *) (scr + (offset *4)) = c;
 }
 
 void lfb_refresh()
