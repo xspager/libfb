@@ -46,7 +46,7 @@ png_bytep * row_pointers;
 
 void read_png_file(char* file_name)
 {
-	uint8_t  header[8];	// 8 is the maximum size that can be checked
+	uint8_t  header[8];	/* 8 is the maximum size that can be checked */
 
 	FILE *fp = fopen(file_name, "rb");
 

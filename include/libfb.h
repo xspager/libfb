@@ -60,7 +60,7 @@ typedef struct {
 #else
 struct {
 #endif
-	char id[18]; //!< Framebuffer driver identification string
+	char id[18]; /*!< Framebuffer driver identification string */
 	int bytes_per_line;
 	int width;
 	int height;
