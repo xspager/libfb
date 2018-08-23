@@ -53,7 +53,10 @@ void read_png_file(char* file_name)
 	if (!fp)
 		abort_("[read_png_file] File %s could not be opened for reading", file_name);
 	
-	fread(header, 1, 8, fp);
+	if ( 8!=fread(header, 1, 8, fp) )
+        abort_("[read_png_file] File %s could not read PNG signature bytes", file_name);
+	
+
 	
 	if (png_sig_cmp(header, 0, 8))
 		abort_("[read_png_file] File %s is not recognized as a PNG file", file_name);
