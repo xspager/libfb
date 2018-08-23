@@ -281,7 +281,7 @@ void lfb_memset16(void *dst, unsigned int b, size_t len){
 	int i;
 	uint16_t *dst_16;
 	for(i=0; i < len * 2; i++){
-		dst_16 = dst + i;
+		dst_16 = (uint16_t *) dst + i;
 		*dst_16 = (uint16_t)b;
 	}
 	//memset(dst, b, len*2);
