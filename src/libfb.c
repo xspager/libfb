@@ -27,10 +27,7 @@ void lfb_memset8(void *, unsigned int, size_t);
 void lfb_memset16(void *, unsigned int, size_t);
 void lfb_memset32(void *, unsigned int, size_t);
 void lfb_put_pixel(int, int, Color);
-void lfb_set_pixel8(int, Color);
-void lfb_set_pixel16(int, Color);
-void lfb_set_pixel32(int, Color);
-	
+
 void lfb_fill_scr(Color);
 void lfb_draw_line(Point, Point, int, Color);
 void lfb_exit_error(char *);
@@ -66,6 +63,8 @@ void lfb_init()
 		exit(3);
 	}
 	
+	//printf("type: %i type_aux: %i\n",fb_fix_info.type, fb_fix_info.type_aux);
+
 	// set some constants
 	strncpy(lfb.id, fb_fix_info.id, sizeof(lfb.id));
 	lfb.bytes_per_line = fb_fix_info.line_length;
@@ -88,16 +87,14 @@ void lfb_init()
 	switch(lfb.bpp){
 		case 8:
 			lfb.memset = &lfb_memset8;
-			lfb.setpixel = &lfb_set_pixel8;
 			break;
 		case 16:
 			lfb.memset = &lfb_memset16;
-			lfb.setpixel = &lfb_set_pixel16;
 			break;
 		case 24:
+			// TODO
 		case 32:
 			lfb.memset = &lfb_memset32;
-			lfb.setpixel = &lfb_set_pixel32;
 			break;
 	}
 	
@@ -111,7 +108,7 @@ void lfb_init()
 
 void lfb_fill_scr(Color c)
 {
-	lfb.memset(scr, c, lfb.width * lfb.height );
+	lfb.fillbox(0, 0, lfb.width, lfb.height, c);
 }
 
 void lfb_fill_box(int x, int y, int w, int h, Color color)
@@ -127,18 +124,25 @@ void lfb_fill_box(int x, int y, int w, int h, Color color)
 
 /* Modifyed copy from https://github.com/ssloy/tinyrenderer/wiki/Lesson-1:-Bresenham%E2%80%99s-Line-Drawing-Algorithm
 	...lets be honest, I couldn't even implement it correctly :/
+
+   And it was't even corret apparenly even without GCC's -O1 "help"
 */
 void lfb_draw_line(Point pa, Point pb, int width, Color color)
 {
 	bool steep = false;
-	int x;
+	int x,y;
 	Point *start = &pa, *end = &pb, *tmp;
-	
+
 	if(abs(pa.x - pb.x) < abs(pa.y - pb.y)){
-		start = &(Point){.x = pa.y, .y = pa.x};
-		end = &(Point){.x = pb.y, .y = pb.x};
+		Point new_start = {.x = pa.y, .y = pa.x};
+		Point new_end = {.x = pb.y, .y = pb.x};
+		start = &new_start;
+		end = &new_end;
+
 		steep = true;
 	}
+
+	// with GCC 13.2.0 -O1 and up the swap fails and point to garbage
 	if(start->x > end->x){
 		tmp = start;
 		start = end;
@@ -149,10 +153,9 @@ void lfb_draw_line(Point pa, Point pb, int width, Color color)
 	int dy = end->y - start->y;
 	int derror2 = abs(dy)*2;
 	int error2 = 0;
+	y = start->y;
 
-	for(x = start->x; x <= end->x; x++){
-		float t = (x-start->x)/(float) (end->x - start->x);
-		int y = start->y * (1.-t) + end->y*t;
+	for(x = start->x; x < end->x; x++){
 		if (steep){
 			lfb.putpixel(y, x, color);
 		} else {
@@ -296,29 +299,14 @@ void lfb_memset16(void *dst, unsigned int b, size_t len){
 }
 
 void lfb_memset32(void *dst, unsigned int b, size_t len){
-	wmemset(dst, b, len);
-}
-
-void lfb_set_pixel8(int offset, Color c){
-	if(offset < 0) offset = 0;
-	if(offset > lfb.width * lfb.height) offset = lfb.width * lfb.height;
-	*(scr + offset) = (char) c;
+	uint32_t *dst_32 = (uint32_t *) dst;
+	for(int i = 0; i <= len; i++) {
+		*(dst_32 + i) = b;
+	}
 }
 
 void lfb_put_pixel(int x, int y, Color c){
-	lfb.setpixel(x + (lfb.width * y), c);
-}
-
-void lfb_set_pixel16(int offset, Color c){
-	if(offset < 0) return;
-	if(offset > lfb.width * lfb.height) return;
-	*(uint16_t *) (scr + (offset *2)) = c;
-}
-
-void lfb_set_pixel32(int offset, Color c){
-	if(offset < 0) return;
-	if(offset > lfb.width * lfb.height) return;
-	*(unsigned int *) (scr + (offset *4)) = c;
+	lfb.memset(scr + (lfb.bytes_per_line * y) + (x*4), c, 1);
 }
 
 void lfb_refresh()
