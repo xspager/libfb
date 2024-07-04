@@ -12,8 +12,8 @@ ECHO	= echo
 
 SHELL	= /bin/sh
 
-LIBFB	= ../libfb.o
+LIBFB	= ../libfb.a
 #CFLAGS	= -ggdb -mtune=native -pipe -O3 -I../../include/
-CFLAGS	= -mtune=native -Wall -pipe -O3 -g -I../../include/ -fPIC -Wall -Wpedantic
+CFLAGS	= -mtune=native -Wall -pipe -O3 -I $(INCLUDE_DIR) -ggdb -Wall -Wpedantic
 
 .SILENT :

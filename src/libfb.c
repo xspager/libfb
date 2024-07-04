@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <fcntl.h>
+#include <errno.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
@@ -19,7 +20,9 @@
 
 int fb;
 byte *scr;
+lfb_struct lfb;
 
+void lfb_memset8(void *, unsigned int, size_t);
 void lfb_memset8(void *, unsigned int, size_t);
 void lfb_memset16(void *, unsigned int, size_t);
 void lfb_memset32(void *, unsigned int, size_t);
@@ -48,7 +51,7 @@ void lfb_init()
 	}
 	fb = open(FB_DEV, O_RDWR);
 	if(fb < 0){
-		//printf("Can`t open /dev/fb0\n");
+		printf("Can`t open %s %s\n", FB_DEV, strerror(errno));
 		fb = open("/dev/graphics/fb0", O_RDWR);
 		if(fb < 0)
 			lfb_exit_error("Can`t open /dev/graphics/fb0\n");
@@ -97,8 +100,10 @@ void lfb_init()
 	
 	//printf("Screen size %dx%d\n", lfb.width, lfb.height);
 
-	scr = (unsigned char *) mmap(0, fb_fix_info.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fb, 0);
+	scr = (unsigned char *) mmap((void *)fb_fix_info.smem_start, fb_fix_info.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fb, 0);
 	scr+= (fb_var_info.xoffset + fb_var_info.yoffset * fb_var_info.xres_virtual) * (fb_var_info.bits_per_pixel >> 3);
+
+    lfb.scr = scr;
 }
 
 void lfb_fill_scr(Color c)
@@ -356,6 +361,5 @@ void lfb_draw_char(char ch, int color)
 		}
 	}
 }
-void openKB()
-{
-}	
+
+//void openKB(){}	

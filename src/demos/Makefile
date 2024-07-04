@@ -8,5 +8,8 @@ all:	$(PROGS)
 %:	%.c ../libfb.o
 	$(CC) -o $* $*.c -lm -lpng -lz $(LIBFB) $(CFLAGS) #-static
 
+olive-demo:	olive-demo.c ../libfb.o 
+	$(CC) -o olive-demo $(LIBFB) olive-demo.c
+
 clean:
 	$(RM) $(PROGS)

@@ -36,7 +36,7 @@ typedef unsigned char byte;
 /**
 	Initialize values and function pointers in lfb.
 */
-void lfb_init();
+extern void lfb_init();
 
 typedef struct{
 	int x;
@@ -55,11 +55,7 @@ typedef struct{
 /**
 	lfb
 */
-#ifdef DOXYGEN
 typedef struct {
-#else
-struct {
-#endif
 	char id[18]; /*!< Framebuffer driver identification string */
 	int bytes_per_line;
 	int width;
@@ -79,4 +75,7 @@ struct {
 	void (*putpixel)(int, int, Color);
 	void (*draw_char)(char, Color);
 	void (*refresh)();
-} lfb;
+    byte *scr;
+} lfb_struct;
+
+extern lfb_struct lfb;

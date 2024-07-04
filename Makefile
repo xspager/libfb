@@ -1,3 +1,7 @@
+INCLUDE_DIR = $(realpath ./include)
+
+export INCLUDE_DIR
+
 all:	lib tests demos
 
 lib:
