@@ -16,15 +16,19 @@ int main()
 		lfb.fillscr(BLACK);
 	
 		lfb.drawline((Point){lfb.width/2, 0}, (Point){lfb.width/2, lfb.height}, 1, WHITE);
+		lfb.refresh();
 		
 		lfb.fillbox(50,200,50,200,WHITE);
+		lfb.refresh();
 
 		lfb.fillbox(700,200,50,200,WHITE);
+		lfb.refresh();
 	
 	//	lfb.fillbox(100,100,300,200,YELLOW);
 		
 	
 		update_ball(ball, 10,10,WHITE);
+		lfb.refresh();
 		//lfb.fillbox(ball.x - 5, ball.y - 5, 10, 10, WHITE);
 		ball.x++; ball.y++;
 		
@@ -36,8 +40,8 @@ int main()
 		}
 */		
 		if(ball.y == 600 - 5) break;
-		lfb.refresh();
-		usleep(30000);
+		//lfb.refresh();
+		usleep(60 * 1000);
 	}
 
 	return EXIT_SUCCESS;

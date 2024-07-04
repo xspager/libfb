@@ -14,11 +14,11 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include <libfb.h>
+#include "../../include/libfb.h"
 
 
 #define WIDTH   1280
-#define HEIGHT  768
+#define HEIGHT  1024
 
 
 /* origin is the upper left corner */
@@ -45,6 +45,7 @@ draw_bitmap( FT_Bitmap*  bitmap,
         continue;
 
       image[j][i] |= bitmap->buffer[q * bitmap->width + p];
+      //image[j][i] = bitmap->buffer[q * bitmap->width + p];
     }
   }
 }
@@ -62,10 +63,10 @@ show_image( void )
         for ( j = 0; j < WIDTH; j++ ) {
 			// ARGB
 			color = image[i][j];
-        	if(color) {
-				//printf("0x%08x\n", color);
-				color = ((color & 0x000000FF) << 8) + 0xFF000000; // map the blue to green and set alpha to 0xFF
-			}
+        	//if(color) {
+			//	//printf("0x%08x\n", color);
+			//	color = ((color & 0x000000FF) << 8) + 0xFF000000; // map the blue to green and set alpha to 0xFF
+			//}
           	lfb.putpixel(i,j, color);
       	}
     }
@@ -113,7 +114,7 @@ main( int     argc,
   /* error handling omitted */
 
   /* use 50pt at 100dpi */
-  error = FT_Set_Char_Size( face, 12 * 64, 0,
+  error = FT_Set_Char_Size( face, 70 * 64, 0,
                             100, 0 );                /* set character size */
   /* error handling omitted */
 
@@ -136,7 +137,7 @@ main( int     argc,
     FT_Set_Transform( face, &matrix, &pen );
 
     /* load glyph image into the slot (erase previous one) */
-    error = FT_Load_Char( face, text[n], FT_LOAD_RENDER | FT_LOAD_COLOR );
+    error = FT_Load_Char( face, text[n], FT_LOAD_RENDER);
     if ( error )
       continue;                 /* ignore errors */
 
