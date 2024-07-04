@@ -7,8 +7,8 @@
 #define GRAY	0x888888
 #define GREEN	0x00FF00
 #define BLUE	0x0000FF
-#define RED		0xFF0000
-#define WHITE	0xFFFFFF
+#define RED		0xFFFF0000
+#define WHITE	0xFFFFFFFF
 #define BLACK	0x000000
 
 #if 0
@@ -52,6 +52,13 @@ typedef struct{
 	char *data;
 } Image;
 
+// same as fb_bitfield
+struct Bitfield {
+	int offset;		/* beginning of bitfield	*/
+	int length;		/* length of bitfield		*/
+	int msb_right;	/* != 0 : Most significant bit is right */
+};
+
 /**
 	lfb
 */
@@ -61,6 +68,10 @@ typedef struct {
 	int width;
 	int height;
 	int bpp;
+	struct Bitfield red;
+	struct Bitfield green;
+	struct Bitfield blue;
+	struct Bitfield transp;
 	void (*memset)(void *dst, unsigned int data, size_t n);
 	void (*fillscr)(Color c);
 	void (*fillbox)(int, int, int, int, Color);

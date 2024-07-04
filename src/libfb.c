@@ -72,7 +72,10 @@ void lfb_init()
 	lfb.width = fb_var_info.xres;
 	lfb.height = fb_var_info.yres;
 	lfb.bpp = fb_var_info.bits_per_pixel;
-	
+	mempcpy(&lfb.red, &fb_var_info.red, sizeof(struct Bitfield)); // save a copy
+	mempcpy(&lfb.green, &fb_var_info.green, sizeof(struct Bitfield)); // save a copy
+	mempcpy(&lfb.blue, &fb_var_info.blue, sizeof(struct Bitfield)); // save a copy
+	mempcpy(&lfb.transp, &fb_var_info.transp, sizeof(struct Bitfield)); // save a copy
 	lfb.fillbox = &lfb_fill_box;
 	lfb.drawpolygon = &lfb_draw_polygon;
 	lfb.drawtriangle = &lfb_draw_triangle;
